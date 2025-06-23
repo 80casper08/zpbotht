@@ -118,24 +118,20 @@ async def get_bonus_percent(message: types.Message, state: FSMContext):
         await message.answer("⚠️ Обери відсоток з кнопок")
 
 # Вебсервер для Render
-async def handle(request):
-    return web.Response(text="Бот працює!")
+async def run_web():
+    async def handle(request):
+        return web.Response(text="Бот працює!")
 
-def keep_alive():
     app = web.Application()
     app.router.add_get("/", handle)
     runner = web.AppRunner(app)
-
-    async def run():
-        await runner.setup()
-        site = web.TCPSite(runner, "0.0.0.0", 8080)
-        await site.start()
-
-    return run
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", 8080)
+    await site.start()
 
 # Запуск
 async def main():
-    await keep_alive()()
+    await run_web()
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
