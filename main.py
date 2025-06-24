@@ -10,7 +10,7 @@ from threading import Thread
 
 # Ініціалізація токена
 TOKEN = os.getenv("TOKEN2")
-bot = Bot(token=TOKEN2)
+bot = Bot(token=TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
 # Стани
