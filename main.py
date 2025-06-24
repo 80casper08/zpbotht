@@ -9,8 +9,8 @@ from flask import Flask
 from threading import Thread
 
 # Ініціалізація токена
-TOKEN = os.getenv("TOKEN")
-bot = Bot(token=TOKEN)
+TOKEN = os.getenv("TOKEN2")
+bot = Bot(token=TOKEN2)
 dp = Dispatcher(storage=MemoryStorage())
 
 # Стани
