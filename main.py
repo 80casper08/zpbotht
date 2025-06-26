@@ -3,8 +3,8 @@ import os
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.state import State, StatesGroup
+from aiogram.fsm.storage.memory import MemoryStorage
 from flask import Flask
 from threading import Thread
 
@@ -76,7 +76,8 @@ async def get_overtime_shifts(message: types.Message, state: FSMContext):
         await state.update_data(overtime_shifts=overtime)
 
         buttons = [[KeyboardButton(text=f"{percent}%")] for percent in PERCENT_OPTIONS]
-        await message.answer("🎯 Обери відсоток премії:", reply_markup=ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True))
+        buttons.append([KeyboardButton(text="Ввести вручну")])
+        await message.answer("🎯 Обери відсоток премії або введи вручну (наприклад, 80):", reply_markup=ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True))
         await state.set_state(SalaryForm.bonus_percent)
     except:
         await message.answer("Введи число")
@@ -85,7 +86,7 @@ async def get_overtime_shifts(message: types.Message, state: FSMContext):
 async def get_bonus_percent(message: types.Message, state: FSMContext):
     try:
         percent = int(message.text.replace("%", ""))
-        if percent not in PERCENT_OPTIONS:
+        if not 0 <= percent <= 200:
             raise ValueError
         data = await state.get_data()
 
@@ -116,7 +117,7 @@ async def get_bonus_percent(message: types.Message, state: FSMContext):
         )
         await state.clear()
     except:
-        await message.answer("⚠️ Обери відсоток з кнопок")
+        await message.answer("⚠️ Введи коректне число від 0 до 200 або скористайся кнопками")
 
 # Flask-сервер для keep_alive
 app = Flask('')
