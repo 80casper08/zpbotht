@@ -126,12 +126,17 @@ app = Flask('')
 def home():
     return "Бот працює 24/7 ✅"
 
+@app.route('/ping')
+def ping():
+    return "OK", 200
+
 def run_flask():
     app.run(host='0.0.0.0', port=8080)
 
 def keep_alive():
     thread = Thread(target=run_flask)
     thread.start()
+
 
 # Запуск
 async def main():
