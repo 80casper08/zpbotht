@@ -13,6 +13,9 @@ TOKEN = os.getenv("TOKEN2")
 bot = Bot(token=TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
+GROUP_ID = -1002786428793  
+PING_INTERVAL = 8 * 60 * 60 
+
 # Стани
 class SalaryForm(StatesGroup):
     grade = State()
