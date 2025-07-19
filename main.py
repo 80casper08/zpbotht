@@ -136,11 +136,18 @@ def run_flask():
 def keep_alive():
     thread = Thread(target=run_flask)
     thread.start()
+async def send_ping():
+    while True:
+        try:
+            await bot.send_message(GROUP_ID, "✅ Я працююю! ✅")
+        except Exception as e:
+            print(f"❗ Помилка надсилання пінгу: {e}")
+        await asyncio.sleep(PING_INTERVAL)
 
 
-# Запуск
 async def main():
     keep_alive()
+    asyncio.create_task(send_ping())  # 🚀 Запускає пінг-функцію
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
