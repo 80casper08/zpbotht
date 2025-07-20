@@ -14,7 +14,7 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
 GROUP_ID = -1002786428793  
-PING_INTERVAL = 8 * 60 * 60 
+PING_INTERVAL = 6 * 60 * 60 
 
 # Стани
 class SalaryForm(StatesGroup):
