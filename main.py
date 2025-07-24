@@ -31,15 +31,22 @@ GRADE_DATA = {
     "High": {"monthly": 18500, "bonus": 4500}
 }
 
-# Варіанти для премії
+# Варіанти премії
 PERCENT_OPTIONS = [100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50]
 
-# Варіанти для кількості змін (5–10)
+# Варіанти для змін
 SHIFT_OPTIONS = [5, 6, 7, 8, 9, 10]
+OVERTIME_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 def get_shift_keyboard():
     return ReplyKeyboardMarkup(
         keyboard=[[KeyboardButton(text=str(num))] for num in SHIFT_OPTIONS],
+        resize_keyboard=True
+    )
+
+def get_overtime_keyboard():
+    return ReplyKeyboardMarkup(
+        keyboard=[[KeyboardButton(text=str(num))] for num in OVERTIME_OPTIONS],
         resize_keyboard=True
     )
 
@@ -76,7 +83,7 @@ async def get_day_shifts(message: types.Message, state: FSMContext):
         )
         await state.set_state(SalaryForm.night_shifts)
     except:
-        await message.answer("Введи число, або обери з кнопок.", reply_markup=get_shift_keyboard())
+        await message.answer("Введи число або обери з кнопок.", reply_markup=get_shift_keyboard())
 
 @dp.message(SalaryForm.night_shifts)
 async def get_night_shifts(message: types.Message, state: FSMContext):
@@ -85,11 +92,11 @@ async def get_night_shifts(message: types.Message, state: FSMContext):
         await state.update_data(night_shifts=night_shifts)
         await message.answer(
             "⏱️ Введи кількість овертаймів:",
-            reply_markup=get_shift_keyboard()
+            reply_markup=get_overtime_keyboard()
         )
         await state.set_state(SalaryForm.overtime_shifts)
     except:
-        await message.answer("Введи число, або обери з кнопок.", reply_markup=get_shift_keyboard())
+        await message.answer("Введи число або обери з кнопок.", reply_markup=get_shift_keyboard())
 
 @dp.message(SalaryForm.overtime_shifts)
 async def get_overtime_shifts(message: types.Message, state: FSMContext):
@@ -99,10 +106,13 @@ async def get_overtime_shifts(message: types.Message, state: FSMContext):
 
         buttons = [[KeyboardButton(text=f"{percent}%")] for percent in PERCENT_OPTIONS]
         buttons.append([KeyboardButton(text="Ввести вручну")])
-        await message.answer("🎯 Обери відсоток премії або введи вручну (наприклад, 80):", reply_markup=ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True))
+        await message.answer(
+            "🎯 Обери відсоток премії або введи вручну (наприклад, 80):",
+            reply_markup=ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+        )
         await state.set_state(SalaryForm.bonus_percent)
     except:
-        await message.answer("Введи число, або обери з кнопок.", reply_markup=get_shift_keyboard())
+        await message.answer("Введи число або обери з кнопок.", reply_markup=get_overtime_keyboard())
 
 @dp.message(SalaryForm.bonus_percent)
 async def get_bonus_percent(message: types.Message, state: FSMContext):
