@@ -11,7 +11,7 @@ import uvicorn
 
 TOKEN = os.getenv("TOKEN2")
 WEBHOOK_PATH = "/webhook"
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")  # Наприклад: https://hardtest3-1.onrender.com/webhook
+WEBHOOK_URL = "https://zpbotht-gn56.onrender.com" # Наприклад: https://hardtest3-1.onrender.com/webhook
 GROUP_ID = -1002786428793
 
 bot = Bot(token=TOKEN)
